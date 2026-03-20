@@ -1,0 +1,33 @@
+import pytest
+
+import data
+from status_codes import HTTPStatusCodes
+
+
+class TestLoginCourier:
+    def test_login_courier_success(self, courier_client, new_courier_data):
+        courier_client.create_courier(new_courier_data)
+        response = courier_client.login_courier(new_courier_data["login"], new_courier_data["password"])
+        assert response.status_code == HTTPStatusCodes.CODE_200_OK["status_code"]
+        assert "id" in response.json()
+
+    @pytest.mark.parametrize("empty_field", ["login", "password"])
+    def test_login_courier_empty_fields_show_error(self, courier_client, empty_field):
+        courier_data = data.valid_courier_data.copy()
+        courier_data[empty_field] = ''
+        response = courier_client.login_courier(courier_data["login"], courier_data["password"])
+        assert response.status_code == HTTPStatusCodes.CODE_400_BAD_REQUEST_LOGIN['status_code']
+        assert response.json() == HTTPStatusCodes.CODE_400_BAD_REQUEST_LOGIN['message']
+
+    @pytest.mark.parametrize("incorrect_field", ["login", "password"])
+    def test_login_courier_incorrect_fields_show_error(self, courier_client, incorrect_field):
+        courier_data = data.valid_courier_data.copy()
+        courier_data[incorrect_field] = f"incorrect {incorrect_field}"
+        response = courier_client.login_courier(courier_data["login"], courier_data["password"])
+        assert response.status_code == HTTPStatusCodes.CODE_404_NOT_FOUND['status_code']
+        assert response.json() == HTTPStatusCodes.CODE_404_NOT_FOUND['message']
+
+    def test_login_courier_nonexistent_courier_show_error(self, courier_client, new_courier_data):
+        response = courier_client.login_courier(new_courier_data["login"], new_courier_data["password"])
+        assert response.status_code == HTTPStatusCodes.CODE_404_NOT_FOUND['status_code']
+        assert response.json() == HTTPStatusCodes.CODE_404_NOT_FOUND['message']
