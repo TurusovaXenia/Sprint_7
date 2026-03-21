@@ -5,9 +5,8 @@ from status_codes import HTTPStatusCodes
 
 
 class TestLoginCourier:
-    def test_login_courier_success(self, courier_client, new_courier_data):
-        courier_client.create_courier(new_courier_data)
-        response = courier_client.login_courier(new_courier_data["login"], new_courier_data["password"])
+    def test_login_courier_success(self, courier_client):
+        response = courier_client.login_courier(data.valid_courier_data["login"], data.valid_courier_data["password"])
         assert response.status_code == HTTPStatusCodes.CODE_200_OK["status_code"]
         assert "id" in response.json()
 

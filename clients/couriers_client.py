@@ -4,7 +4,6 @@ from status_codes import HTTPStatusCodes
 
 
 class CourierClient(BaseClient):
-
     def create_courier(self, payload):
         return self.post(Endpoints.CREATE_COURIER, payload)
 
