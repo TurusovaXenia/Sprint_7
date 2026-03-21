@@ -4,3 +4,4 @@ class Endpoints:
     LOGIN_COURIER = "/api/v1/courier/login"
     DELETE_COURIER = "/api/v1/courier"
     CREATE_ORDER = "/api/v1/orders"
+    GET_ORDERS_LISR = "/api/v1/orders"
