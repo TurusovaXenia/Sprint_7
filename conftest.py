@@ -1,4 +1,5 @@
 import pytest
+import requests
 
 import data
 from clients.couriers_client import CourierClient
@@ -8,9 +9,16 @@ from status_codes import HTTPStatusCodes
 from utils import helpers
 
 
+@pytest.fixture(scope="session")
+def api_session():
+    session = requests.Session()
+    yield session
+    session.close()
+
+
 @pytest.fixture(scope="function")
-def courier_client():
-    return CourierClient(Endpoints.BASE_URL)
+def courier_client(api_session):
+    return CourierClient(Endpoints.BASE_URL, api_session)
 
 
 @pytest.fixture(scope="function")
@@ -29,8 +37,8 @@ def courier_cleanup(courier_client, new_courier_data):
 
 
 @pytest.fixture(scope="function")
-def order_client():
-    return OrderClient(Endpoints.BASE_URL)
+def order_client(api_session):
+    return OrderClient(Endpoints.BASE_URL, api_session)
 
 
 @pytest.fixture(scope="function")
@@ -51,7 +59,7 @@ def courier_setup(courier_client, new_courier_data):
 
 
 @pytest.fixture(scope="function")
-def order_setup(order_client):
+def order_id(order_client):
     response = order_client.create_order(data.order_data)
     order_id = response.json()["track"]
     return order_id

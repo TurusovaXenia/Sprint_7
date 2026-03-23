@@ -1,11 +1,13 @@
+import allure
 import pytest
 
 from status_codes import HTTPStatusCodes
 
 
 class TestAcceptOrder:
-    def test_accept_order_success(self, order_client, order_setup, courier_setup):
-        response = order_client.accept_order(order_setup, courier_setup['id'])
+    @allure.title("Проверка успешного вызова метода 'Принять заказ'")
+    def test_accept_order_success(self, order_client, order_id, courier_setup):
+        response = order_client.accept_order(order_id, courier_setup['id'])
 
         assert response.status_code == HTTPStatusCodes.CODE_200_OK['status_code']
         assert response.json() == HTTPStatusCodes.CODE_200_OK['message']
@@ -20,13 +22,16 @@ class TestAcceptOrder:
             "invalid_order_id_shows_error",
             "invalid_courier_id_shows_error"]
                              )
-    def test_accept_order(self, order_client, order_setup, order_id_idx,
+    @allure.title("Проверка негативных сценариев для метода 'Принять заказ'")
+    @allure.description(
+        "Происходит проверка четырех кейсов - пустой order_id/courier_id, невалидный order_id/courier_id")
+    def test_accept_order(self, order_client, order_id, order_id_idx,
                           courier_setup, courier_id_idx,
                           expected_error):
-        order_id = order_setup if order_id_idx == "valid" else order_id_idx
+        order = order_id if order_id_idx == "valid" else order_id_idx
         courier_id = courier_setup["id"] if courier_id_idx == "valid" else courier_id_idx
 
-        response = order_client.accept_order(order_id, courier_id)
+        response = order_client.accept_order(order, courier_id)
 
         assert response.status_code == expected_error['status_code']
         assert response.json() == expected_error['message']

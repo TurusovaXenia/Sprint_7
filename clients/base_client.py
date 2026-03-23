@@ -2,9 +2,9 @@ import requests
 
 
 class BaseClient:
-    def __init__(self, base_url):
+    def __init__(self, base_url, session):
         self.base_url = base_url
-        self.session = requests.Session()
+        self.session = session
 
     def get(self, url, params=None):
         return self.session.get(self.base_url + url, params=params)
