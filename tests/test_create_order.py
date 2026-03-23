@@ -10,5 +10,6 @@ class TestCreateOrder:
         order_data = data.order_data.copy()
         order_data["color"] = color
         response = order_client.create_order(order_data)
+
         assert response.status_code == HTTPStatusCodes.CODE_201_CREATED['status_code']
         assert "track" in response.json()

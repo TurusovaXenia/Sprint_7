@@ -5,3 +5,5 @@ class Endpoints:
     DELETE_COURIER = "/api/v1/courier"
     CREATE_ORDER = "/api/v1/orders"
     GET_ORDERS_LISR = "/api/v1/orders"
+    ACCEPT_ORDER = "/api/v1/orders/accept"
+    GET_ORDER_BY_NUMBER = "/api/v1/orders/track"

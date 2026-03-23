@@ -1,6 +1,5 @@
 from clients.base_client import BaseClient
 from endpoints import Endpoints
-from status_codes import HTTPStatusCodes
 
 
 class CourierClient(BaseClient):
@@ -14,8 +13,5 @@ class CourierClient(BaseClient):
         }
         return self.post(Endpoints.LOGIN_COURIER, payload)
 
-    def delete_courier(self, login, password):
-        response = self.login_courier(login, password)
-        if response.status_code == HTTPStatusCodes.CODE_200_OK:
-            courier_id = response.json()['id']
-            self.delete(f'{Endpoints.DELETE_COURIER}/{courier_id}')
+    def delete_courier(self, courier_id):
+        return self.delete(f'{Endpoints.DELETE_COURIER}/{courier_id}')
