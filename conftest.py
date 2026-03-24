@@ -59,7 +59,7 @@ def courier_setup(courier_client, new_courier_data):
 
 
 @pytest.fixture(scope="function")
-def order_id(order_client):
+def order_track(order_client):
     response = order_client.create_order(data.order_data)
-    order_id = response.json()["track"]
-    return order_id
+    order_track = response.json()["track"]
+    return order_track
