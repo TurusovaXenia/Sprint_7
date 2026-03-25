@@ -24,7 +24,8 @@ class TestCreateCourier:
 
     @pytest.mark.parametrize("empty_field", ["login", "password"])
     @allure.title("Проверка невозможности создания курьера если обязательные поля отсутствуют в запросе")
-    @allure.issue("BUG-2", "Лишнее поле 'code' в ответе метода 'Создание курьера' при создании курьера без логина или пароля")
+    @allure.issue("BUG-2",
+                  "лишнее поле 'code' в ответе метода 'Создание курьера' при создании курьера без логина или пароля")
     def test_create_courier_empty_fields_shows_error(self, courier_client, empty_field):
         courier_data = data.valid_courier_data.copy()
         courier_data[empty_field] = ''

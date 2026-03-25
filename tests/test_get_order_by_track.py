@@ -12,7 +12,7 @@ class TestGetOrderByNumber:
         assert response.json()['order']['track'] == order_track
 
     @allure.title("Проверка вызова метода 'Получить заказ по номеру' с пустым заказом")
-    @allure.issue("BUG-11", "лишнее поле 'code' в ответе метода 'Получить заказ по номеру' если параметр t пуст")
+    @allure.issue("BUG-12", "лишнее поле 'code' в ответе метода 'Получить заказ по номеру' если параметр t пуст")
     def test_get_order_by_track_empty_number_shows_error(self, order_client):
         response = order_client.get_order_by_number("")
 
@@ -20,7 +20,7 @@ class TestGetOrderByNumber:
         assert response.json() == HTTPStatusCodes.CODE_400_BAD_REQUEST_ACCEPT_GET['message']
 
     @allure.title("Проверка вызова метода 'Получить заказ по номеру' с несуществующим заказом")
-    @allure.issue("BUG-12", "лишнее поле 'code' в ответе метода 'Получить заказ по номеру' если параметр t невалиден")
+    @allure.issue("BUG-13", "лишнее поле 'code' в ответе метода 'Получить заказ по номеру' если параметр t невалиден")
     def test_get_order_by_track_invalid_number_shows_error(self, order_client):
         response = order_client.get_order_by_number("0")
 
