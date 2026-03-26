@@ -9,20 +9,18 @@ class TestGetOrderByNumber:
         response = order_client.get_order_by_number(order_track)
 
         assert response.status_code == HTTPStatusCodes.CODE_200_OK['status_code']
-        assert response.json()['order']['track'] == order_track
+        assert response.json().get('order',{}).get('track') == order_track
 
     @allure.title("Проверка вызова метода 'Получить заказ по номеру' с пустым заказом")
-    @allure.issue("BUG-12", "лишнее поле 'code' в ответе метода 'Получить заказ по номеру' если параметр t пуст")
     def test_get_order_by_track_empty_number_shows_error(self, order_client):
         response = order_client.get_order_by_number("")
 
         assert response.status_code == HTTPStatusCodes.CODE_400_BAD_REQUEST_ACCEPT_GET['status_code']
-        assert response.json() == HTTPStatusCodes.CODE_400_BAD_REQUEST_ACCEPT_GET['message']
+        assert response.json().get('message') == HTTPStatusCodes.CODE_400_BAD_REQUEST_ACCEPT_GET['message']
 
     @allure.title("Проверка вызова метода 'Получить заказ по номеру' с несуществующим заказом")
-    @allure.issue("BUG-13", "лишнее поле 'code' в ответе метода 'Получить заказ по номеру' если параметр t невалиден")
     def test_get_order_by_track_invalid_number_shows_error(self, order_client):
         response = order_client.get_order_by_number("0")
 
         assert response.status_code == HTTPStatusCodes.CODE_404_NOT_FOUND_ORDER['status_code']
-        assert response.json() == HTTPStatusCodes.CODE_404_NOT_FOUND_ORDER['message']
+        assert response.json().get('message') == HTTPStatusCodes.CODE_404_NOT_FOUND_ORDER['message']

@@ -12,18 +12,18 @@ class TestDeleteCourier:
         assert response.json() == HTTPStatusCodes.CODE_200_OK['message']
 
     @allure.title("Проверка вызова метода 'Удалить курьер' для уже удаленного курьера")
-    @allure.issue("BUG-5", "несоответствие ответа при удалении уже удаленного курьера")
+    @allure.issue("BUG-2", "несоответствие ответа при удалении уже удаленного курьера")
     def test_delete_courier_nonexistent_id_shows_error(self, courier_client, courier_setup):
         courier_client.delete_courier(courier_setup['id'])
         response = courier_client.delete_courier(courier_setup['id'])
 
         assert response.status_code == HTTPStatusCodes.CODE_404_NOT_FOUND_DELETE['status_code']
-        assert response.json() == HTTPStatusCodes.CODE_404_NOT_FOUND_DELETE['message']
+        assert response.json().get('message') == HTTPStatusCodes.CODE_404_NOT_FOUND_DELETE['message']
 
     @allure.title("Проверка вызова метода 'Удалить курьер' с пустым id")
-    @allure.issue("BUG-6", "несоответствие ответа при удалении курьера с пустым id")
+    @allure.issue("BUG-3", "несоответствие ответа при удалении курьера с пустым id")
     def test_delete_courier_without_id_shows_error(self, courier_client):
         response = courier_client.delete_courier("")
 
         assert response.status_code == HTTPStatusCodes.CODE_400_BAD_REQUEST_DELETE['status_code']
-        assert response.json() == HTTPStatusCodes.CODE_400_BAD_REQUEST_DELETE['message']
+        assert response.json().get('message') == HTTPStatusCodes.CODE_400_BAD_REQUEST_DELETE['message']

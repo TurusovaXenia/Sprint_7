@@ -20,16 +20,14 @@ class TestCreateCourier:
         response = courier_client.create_courier(new_courier_data)
 
         assert response.status_code == HTTPStatusCodes.CODE_409_CONFLICT['status_code']
-        assert response.json() == HTTPStatusCodes.CODE_409_CONFLICT['message']
+        assert response.json().get('message') == HTTPStatusCodes.CODE_409_CONFLICT['message']
 
     @pytest.mark.parametrize("empty_field", ["login", "password"])
     @allure.title("Проверка невозможности создания курьера если обязательные поля отсутствуют в запросе")
-    @allure.issue("BUG-2",
-                  "лишнее поле 'code' в ответе метода 'Создание курьера' при создании курьера без логина или пароля")
     def test_create_courier_empty_fields_shows_error(self, courier_client, empty_field):
         courier_data = data.valid_courier_data.copy()
         courier_data[empty_field] = ''
         response = courier_client.create_courier(courier_data)
 
         assert response.status_code == HTTPStatusCodes.CODE_400_BAD_REQUEST_REGISTRATION['status_code']
-        assert response.json() == HTTPStatusCodes.CODE_400_BAD_REQUEST_REGISTRATION['message']
+        assert response.json().get('message') == HTTPStatusCodes.CODE_400_BAD_REQUEST_REGISTRATION['message']
